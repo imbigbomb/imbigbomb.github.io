@@ -1,0 +1,349 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>饥荒专用服务器Windows开服教程 | 看见</title><meta name="author" content="大肥"><meta name="copyright" content="大肥"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言本文档是基于B战作者：长鸽门徒 的补充文档，文中工具均由长鸽门徒整理开发，教程以及网盘均取自长鸽门徒的专栏，我仅进行了整理补充。 【饥荒联机版 专用服务器搭建】新版鸽子鸽开服工具-使用教程_网络游戏热门视频 十分感谢长鸽门徒让我这个饥荒小白玩到了热乎的服务器，非常非常感谢。 环境 Windows Server 2022 有公网IPv4  这里要说明很重要的一点，饥荒服务器仅支持运行在单个线程(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="饥荒专用服务器Windows开服教程">
+<meta property="og:url" content="http://example.com/post/a2e9609d.html">
+<meta property="og:site_name" content="看见">
+<meta property="og:description" content="前言本文档是基于B战作者：长鸽门徒 的补充文档，文中工具均由长鸽门徒整理开发，教程以及网盘均取自长鸽门徒的专栏，我仅进行了整理补充。 【饥荒联机版 专用服务器搭建】新版鸽子鸽开服工具-使用教程_网络游戏热门视频 十分感谢长鸽门徒让我这个饥荒小白玩到了热乎的服务器，非常非常感谢。 环境 Windows Server 2022 有公网IPv4  这里要说明很重要的一点，饥荒服务器仅支持运行在单个线程(">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/butterfly-icon.png">
+<meta property="article:published_time" content="2025-03-10T06:43:28.000Z">
+<meta property="article:modified_time" content="2025-03-10T06:47:31.434Z">
+<meta property="article:author" content="大肥">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "饥荒专用服务器Windows开服教程",
+  "url": "http://example.com/post/a2e9609d.html",
+  "image": "http://example.com/img/butterfly-icon.png",
+  "datePublished": "2025-03-10T06:43:28.000Z",
+  "dateModified": "2025-03-10T06:47:31.434Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "大肥",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/a2e9609d.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '饥荒专用服务器Windows开服教程',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">看见</span></a><a class="nav-page-title" href="/"><span class="site-name">饥荒专用服务器Windows开服教程</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">饥荒专用服务器Windows开服教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-10T06:43:28.000Z" title="发表于 2025-03-10 14:43:28">2025-03-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-10T06:47:31.434Z" title="更新于 2025-03-10 14:47:31">2025-03-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文档是基于B战作者：<a target="_blank" rel="noopener" href="https://space.bilibili.com/46839902">长鸽门徒</a> 的补充文档，文中工具均由<a target="_blank" rel="noopener" href="https://space.bilibili.com/46839902">长鸽门徒</a>整理开发，教程以及网盘均取自<a target="_blank" rel="noopener" href="https://space.bilibili.com/46839902">长鸽门徒</a>的专栏，我仅进行了整理补充。</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1n4421Q7tm">【饥荒联机版 专用服务器搭建】新版鸽子鸽开服工具-使用教程_网络游戏热门视频</a></p>
+<p>十分感谢<a target="_blank" rel="noopener" href="https://space.bilibili.com/46839902">长鸽门徒</a>让我这个饥荒小白玩到了热乎的服务器，非常非常感谢。</p>
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><ul>
+<li>Windows Server 2022</li>
+<li>有公网IPv4</li>
+</ul>
+<p><strong>这里要说明很重要的一点，饥荒服务器仅支持运行在单个线程(核心)上，也就是说如果你用i7-12700甚至i5-12600都能很轻松的跑起饥荒服务端。但是如果你使用16核32线程的服务器处理器，那么你将获得非常糟糕的联机体验，仅能支持3-4人联机。</strong></p>
+<p><strong>饥荒诞生于一个i3默秒全的时代，很老了，无解，如果你有大于4人的联机需求，请咬咬牙去淘宝买专用的服务器面板服或者用你的台式机开服。</strong></p>
+<h1 id="UU加速器"><a href="#UU加速器" class="headerlink" title="UU加速器"></a>UU加速器</h1><p>由于Steam缺少Wlanapi.dll组件，所以UU无法正常启动，在个别地区，需要UU加速Steam才可以访问创意工坊，甚至无法访问Steam，所以在一切开始之前，请先搞定加速器。</p>
+<p>1.<strong>以管理员身份</strong>启动PowerShell，分别输入下列命令两行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">get-windowsfeature wireless*|Install-WindowsFeature #安装Wireless功能</span><br><span class="line">restart-computer -force #强制重启电脑</span><br></pre></td></tr></table></figure>
+
+<h1 id="下载清单"><a href="#下载清单" class="headerlink" title="下载清单"></a>下载清单</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://uu.163.com/">网易UU加速器</a>（能加速Steam就行爱用哪个用哪个）</li>
+<li><a target="_blank" rel="noopener" href="https://store.steampowered.com/about/">Steam</a></li>
+</ol>
+<p>Steam内需要下载：</p>
+<pre><code>- Don&#39;t Starve Together Dedicated Server（工具）
+- Don&#39;t Starve Mod Tools（工具）
+- 饥荒联机版（游戏）
+</code></pre>
+<ol start="3">
+<li><font style="color:rgb(24, 25, 28);">鸽之力开服工具</font></li>
+</ol>
+<ul>
+<li><font style="color:rgb(24, 25, 28);">下载地址：<a target="_blank" rel="noopener" href="https://cgmt.lanzout.com/b04duzyda">https://cgmt.lanzout.com/b04duzyda</a> 密码:2333</font></li>
+<li><font style="color:rgb(24, 25, 28);">如果链接挂了的话就去</font><a target="_blank" rel="noopener" href="https://space.bilibili.com/46839902">长鸽门徒的个人空间</a><font style="color:rgb(24, 25, 28);">找一下</font></li>
+</ul>
+<ol start="4">
+<li>备用百度网盘内有教学及工具、历史文件</li>
+</ol>
+<ul>
+<li><font style="color:rgb(24, 25, 28);">链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/10nvu2JlG0cTa8HnnDDqHxA">https://pan.baidu.com/s/10nvu2JlG0cTa8HnnDDqHxA</a></font></li>
+<li><font style="color:rgb(24, 25, 28);">提取码：2333</font></li>
+</ul>
+<ol start="5">
+<li>微软常用运行库</li>
+</ol>
+<ul>
+<li>4的百度网盘里有，或者<a target="_blank" rel="noopener" href="https://www.423down.com/10835.html">微软常用运行库合集(Visual C++)2024.11.07 - 423Down</a></li>
+</ul>
+<h1 id="准备事项"><a href="#准备事项" class="headerlink" title="准备事项"></a>准备事项</h1><h2 id="Token"><a href="#Token" class="headerlink" title="Token"></a>Token</h2><p>去Klei官网申请一个你的服务器Token令牌，需要用购买游戏的Steam登录。</p>
+<p><a target="_blank" rel="noopener" href="https://accounts.klei.com/account/game/list">https://accounts.klei.com/account/game/list</a></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733506133978-93d061a0-723c-4c72-8512-5879ab982a19.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733506404277-fba80625-ab7f-465b-9461-11bed187d153.png"></p>
+<p>如果什么都没有就创建一个，我们<strong>只需要Token</strong>，存档功能不需要。此处复制下这样的一串Token保留好就可以关闭网页了。</p>
+<h2 id="MOD"><a href="#MOD" class="headerlink" title="MOD"></a>MOD</h2><p>在饥荒联机版（游戏）的创意工坊中，尽情订阅你需要游玩的Mod。</p>
+<blockquote>
+<p>这一步可以给朋友去做，你专心开服。使用Steam创意工坊收藏夹可以一键订阅所有选好的Mod。</p>
+</blockquote>
+<h1 id="开服工具选项卡设置"><a href="#开服工具选项卡设置" class="headerlink" title="开服工具选项卡设置"></a>开服工具选项卡设置</h1><h2 id="主页"><a href="#主页" class="headerlink" title="主页"></a>主页</h2><ol>
+<li>关闭杀毒工具，打开<font style="color:rgb(24, 25, 28);">鸽之力。</font></li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733506586800-18470511-52a1-46db-bb57-96c0a469a86a.png"></p>
+<ul>
+<li>第一行填写Don’t Starve Together Dedicated Server路径，例如：</li>
+</ul>
+<p><code>C:\Program Files (x86)\Steam\steamapps\common\Don&#39;t Starve Together Dedicated Server</code></p>
+<ul>
+<li>第二行填写我们刚刚生成好的<a href="#FzM4h">Token</a>。</li>
+</ul>
+<ol start="2">
+<li>点击令牌输入栏下方的快速生成存档</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733506789450-22d06df4-e7e4-42e2-8ae3-ea5b2cda12f0.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733507032527-46fcc966-1708-4293-847b-30e5211f0881.png"></p>
+<p>此处仅需自定义红圈内容即可，其他设置相同。完成后点击下方生成存档。</p>
+<p>此时在界面中央便会出现我们创建的存档，点击存档名前方的方框，左侧便会出现存档基本信息。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733507188376-5bb5b4db-31b0-4e0a-820b-147e835af3ec.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733507259480-c09bd912-794e-4f7d-9f13-679f6a1f6539.png"></p>
+<p>屏幕右侧我们按需勾选随后点击保存基础设置。</p>
+<h2 id="世界启动项"><a href="#世界启动项" class="headerlink" title="世界启动项"></a>世界启动项</h2><ol>
+<li>在这里勾选是否开启地下世界，以及显示服务器将会用到的端口号。</li>
+</ol>
+<blockquote>
+<p><font style="color:rgb(24, 25, 28);">你只需要关注 server_port（世界端口号） 不需要关注 master_server_port（主服务器端口） 和 authentication_port（认证端口） 把他们删掉都是没问题的</font></p>
+</blockquote>
+<ul>
+<li><strong>如果没有需求，不要闲着修改端口号。</strong></li>
+<li><strong>记录下来，稍后需要打开防火墙对端口放通。</strong></li>
+</ul>
+<blockquote>
+<p>此处我们需要放通的就是10999和10998端口。</p>
+</blockquote>
+<ol start="2">
+<li>确定地图模式后，点击保存世界启动项设置。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733507639042-b61f2a4f-3cc7-4050-ada6-4c9faded4a29.png"></p>
+<h2 id="世界设置"><a href="#世界设置" class="headerlink" title="世界设置"></a>世界设置</h2><p>这里可以对世界生物、资源进行自定义，同样在修改后需要点击保存世界设置。如果没有什么要自定义的，此处跳过。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733507696068-ede07360-c99b-4a33-9b13-b6a12b8854ee.png"></p>
+<h2 id="MOD管理"><a href="#MOD管理" class="headerlink" title="MOD管理"></a>MOD管理</h2><h3 id="区别客户端MOD及服务器MOD"><a href="#区别客户端MOD及服务器MOD" class="headerlink" title="区别客户端MOD及服务器MOD"></a>区别客户端MOD及服务器MOD</h3><p>MOD管理会自动读取你的<strong>饥荒联机版（游戏）创意工坊</strong>，可以点击刷新查看数量是否对得上，个别MOD为本地端使用，服务器无效（例如汉化），此处不会显示，所以数量对不上，但不会差的太离谱，举例：</p>
+<blockquote>
+<p>我创意工坊有31个订阅，此处只显示24个，这是正常的，如果你订阅了几十个这里只有个位数，那就不对了。</p>
+<p>解决办法是：</p>
+<ol>
+<li>重启开服工具、Steam</li>
+<li>在下方指定<strong>饥荒联机版（游戏）路径</strong>，点击保存路径。</li>
+</ol>
+<p>例：C:\Program Files (x86)\Steam\steamapps\common\Don’t Starve Together</p>
+</blockquote>
+<hr>
+<ol>
+<li>此处我们打开界面正常会显示一排<img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733508131897-e8c0ccd6-0481-482a-9bea-17a4a46f1be2.png">，这是对的，重要的是对数量，如果没问题，我们直接挨个点击<img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733508152408-06eb9871-7ff4-4eb6-874e-5c04f886b119.png">，启用MOD。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733508178781-d574fb6e-febd-4a8b-8e3d-b1baff9cc090.png"></p>
+<p>双击其中一个MOD后，可以在右侧对其功能设定进行修改，每次更改都需要点击保存MOD设置，否则切换就没。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733508243947-f558ff43-2398-472f-a0d8-13887b799c30.png"></p>
+<ol start="2">
+<li>在全部准备妥当后，可以点击页面中间最下方的<strong>自检MOD</strong>跑一下看看能不能通过。全都没问题了点击右下角的<strong>保存MOD设置</strong>。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733508314567-116e1e77-32f8-49cf-bd3f-1b9376cf9083.png"></p>
+<h1 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h1><p>前面我们在<strong>开服工具选项卡设置&#x3D;&#x3D;&gt;世界启动项</strong>中提到了端口，现在需要对其中的端口进行放通。</p>
+<h2 id="自搭建家庭路由设置"><a href="#自搭建家庭路由设置" class="headerlink" title="自搭建家庭路由设置"></a>自搭建家庭路由设置</h2><p>这里我们讲一下端口转发，以OpenWrt为例。</p>
+<p>在<strong>网络&#x3D;&#x3D;&gt;防火墙&#x3D;&#x3D;&gt;端口转发</strong>中，我们添加若干条，此处仅以默认10999为例。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733508675409-03b20704-d9e3-4d87-a49b-46c4f69664ad.png"></p>
+<p>至于源区域和目标区域，按照我图设就可以。</p>
+<p>随后<strong>保存</strong>，再点击<strong>保存与应用</strong>，其余再来几遍放通其他需要的端口。</p>
+<h2 id="云服务器"><a href="#云服务器" class="headerlink" title="云服务器"></a>云服务器</h2><p>按照上面来即可，云服务器不需要转发，直接放通需要的端口。</p>
+<hr>
+<p>如果你实在小白，且服务器规模小打小闹的话，遇事不决全部放开，只要你守护住你的Windows登录账号密码。</p>
+<blockquote>
+<ul>
+<li><strong>不要使用默认Administrator用户账号</strong></li>
+<li><strong>使用强密码</strong></li>
+</ul>
+<p>FhaJK#H5Bg*Qy&amp;A7 这就叫强密码</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Detail</th>
+<th>意味（危）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IP</td>
+<td><code>0.0.0.0/0</code></td>
+<td><font style="color:#DF2A3F;">放开全部IP</font></td>
+</tr>
+<tr>
+<td>端口</td>
+<td><code>0-65535</code></td>
+<td><font style="color:#DF2A3F;">放开全部端口</font></td>
+</tr>
+</tbody></table>
+<h1 id="开启服务器"><a href="#开启服务器" class="headerlink" title="开启服务器"></a>开启服务器</h1><p>此时，我们做完了全部的准备，就可以回到<strong>开服工具</strong>的<strong>主页</strong>了。</p>
+<p>点击右下角的开启服务器，耐心等待。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733509648600-6c619c50-695f-484f-a0f1-ef83425a2c1e.png"></p>
+<p>游戏加载时间较长，<strong>注意不要点击黑色的命令行窗口</strong>，你的点击会导致程序<strong>暂停</strong>。</p>
+<p>如果你不确定你有没有点过，是不是卡死了，注意程序标题是否出现了<strong>选择</strong>字样。</p>
+<p>按下回车即可取消选择暂行继续运行。</p>
+<h1 id="自用Q-A"><a href="#自用Q-A" class="headerlink" title="自用Q&amp;A"></a>自用Q&amp;A</h1><h2 id="MOD加载失败"><a href="#MOD加载失败" class="headerlink" title="MOD加载失败"></a>MOD加载失败</h2><p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733544670605-602f5575-fae2-40f5-921c-5749aa7a986e.png"></p>
+<p>这是因为<font style="color:rgb(24, 25, 28);">自动下载模组功能失效，可以通过如下方式解决：</font></p>
+<ol>
+<li>打开<strong>MOD管理页面</strong>，选择下方的<strong>克隆模组</strong>。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733544789886-fd57b574-2d5c-4adb-abc8-bbe7bd07e5e0.png"></p>
+<ol start="2">
+<li>回到主页，<strong>取消勾选</strong>右侧的<strong>模组优先。</strong></li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733544906241-8701d7bc-e8d4-4f71-a1d5-56edf0130afe.png"></p>
+<ol start="3">
+<li>启动服务器，会自动加载克隆的MOD，无需调用下载。</li>
+</ol>
+<h2 id="Windows当病毒给我开服工具删喽T-T"><a href="#Windows当病毒给我开服工具删喽T-T" class="headerlink" title="Windows当病毒给我开服工具删喽T_T"></a>Windows当病毒给我开服工具删喽T_T</h2><ol>
+<li>按下开始按钮，输入Windows，打开Windows安全中心。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733545475676-03ba2b6a-8ece-4c91-beb6-46f096a38fa9.png"></p>
+<ol start="2">
+<li>进入病毒和威胁防护</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733545548244-a9f70049-940d-4419-bb74-58f49b7499ff.png"></p>
+<ol start="3">
+<li>进入保护历史记录</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733545589355-62cb91cf-1e6c-44cc-b87a-099d0c13efbb.png"></p>
+<ol start="4">
+<li>找到被扫描到的威胁选项，注意核对受影响项目，在右下角选择还原&#x2F;允许在设备上，点击<strong>操作</strong>。</li>
+</ol>
+<p>（我已经调整过了，无法举例，自己领悟吧）</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733545675610-4737a9f2-acd1-4779-a3d4-8244183d3fc0.png"></p>
+<blockquote>
+<p>可以关闭此功能，但过一段时间后会自动打开，如果不是每天都用的话，不必与其斗争。</p>
+</blockquote>
+<h2 id="游戏角色跑的飞快，时间加速了"><a href="#游戏角色跑的飞快，时间加速了" class="headerlink" title="游戏角色跑的飞快，时间加速了"></a>游戏角色跑的飞快，时间加速了</h2><p><img src="https://cdn.nlark.com/yuque/0/2024/png/32714118/1733545802884-e71005a4-37a8-4ba3-9728-06f6f586b098.png"></p>
+<p>点名这个中文合集MOD，直接禁用。<del>不知道为什么要加个移动速度set在这个mod里</del></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">大肥</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/post/a2e9609d.html">http://example.com/post/a2e9609d.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">看见</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/post/4a17b156.html" title="Hello World"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Hello World</div></div><div class="info-2"><div class="info-item-1">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;  More info: Writing Run server1$ hexo server  More info: Server Generate static files1$ hexo generate  More info: Generating Deploy to remote sites1$ hexo deploy  More info: Deployment </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">大肥</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83"><span class="toc-number">2.</span> <span class="toc-text">环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#UU%E5%8A%A0%E9%80%9F%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">UU加速器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E6%B8%85%E5%8D%95"><span class="toc-number">4.</span> <span class="toc-text">下载清单</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E4%BA%8B%E9%A1%B9"><span class="toc-number">5.</span> <span class="toc-text">准备事项</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Token"><span class="toc-number">5.1.</span> <span class="toc-text">Token</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MOD"><span class="toc-number">5.2.</span> <span class="toc-text">MOD</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E6%9C%8D%E5%B7%A5%E5%85%B7%E9%80%89%E9%A1%B9%E5%8D%A1%E8%AE%BE%E7%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">开服工具选项卡设置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E9%A1%B5"><span class="toc-number">6.1.</span> <span class="toc-text">主页</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%96%E7%95%8C%E5%90%AF%E5%8A%A8%E9%A1%B9"><span class="toc-number">6.2.</span> <span class="toc-text">世界启动项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%96%E7%95%8C%E8%AE%BE%E7%BD%AE"><span class="toc-number">6.3.</span> <span class="toc-text">世界设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MOD%E7%AE%A1%E7%90%86"><span class="toc-number">6.4.</span> <span class="toc-text">MOD管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB%E5%AE%A2%E6%88%B7%E7%AB%AFMOD%E5%8F%8A%E6%9C%8D%E5%8A%A1%E5%99%A8MOD"><span class="toc-number">6.4.1.</span> <span class="toc-text">区别客户端MOD及服务器MOD</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">7.</span> <span class="toc-text">防火墙</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E6%90%AD%E5%BB%BA%E5%AE%B6%E5%BA%AD%E8%B7%AF%E7%94%B1%E8%AE%BE%E7%BD%AE"><span class="toc-number">7.1.</span> <span class="toc-text">自搭建家庭路由设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">7.2.</span> <span class="toc-text">云服务器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">8.</span> <span class="toc-text">开启服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E7%94%A8Q-A"><span class="toc-number">9.</span> <span class="toc-text">自用Q&amp;A</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MOD%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5"><span class="toc-number">9.1.</span> <span class="toc-text">MOD加载失败</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows%E5%BD%93%E7%97%85%E6%AF%92%E7%BB%99%E6%88%91%E5%BC%80%E6%9C%8D%E5%B7%A5%E5%85%B7%E5%88%A0%E5%96%BDT-T"><span class="toc-number">9.2.</span> <span class="toc-text">Windows当病毒给我开服工具删喽T_T</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%A7%92%E8%89%B2%E8%B7%91%E7%9A%84%E9%A3%9E%E5%BF%AB%EF%BC%8C%E6%97%B6%E9%97%B4%E5%8A%A0%E9%80%9F%E4%BA%86"><span class="toc-number">9.3.</span> <span class="toc-text">游戏角色跑的飞快，时间加速了</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/post/a2e9609d.html" title="饥荒专用服务器Windows开服教程">饥荒专用服务器Windows开服教程</a><time datetime="2025-03-10T06:43:28.000Z" title="发表于 2025-03-10 14:43:28">2025-03-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/post/4a17b156.html" title="Hello World">Hello World</a><time datetime="2025-03-07T07:26:04.520Z" title="发表于 2025-03-07 15:26:04">2025-03-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By 大肥</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
